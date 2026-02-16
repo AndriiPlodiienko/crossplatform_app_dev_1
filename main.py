@@ -18,7 +18,7 @@ class ViewApp(tk.Frame):
         super().__init__(master)
         self.pack()
 
-        self.label = tk.Label(self, bg="white", text="")
+        self.label = tk.Label(self, text="", bg="white", fg="black", width=25, height=3, font=("Arial", 14), relief="solid", bd=2)      
         self.label.pack()
 
         button = tk.Button(self, text="PRESS", command=on_click)

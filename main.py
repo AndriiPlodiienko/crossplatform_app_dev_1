@@ -30,7 +30,7 @@ class ViewApp(tk.Frame):
 class ControllerApp:
     def __init__(self, root):
         self.model = ModelApp()
-        self.view = ViewApp(root, self.on_button_click)
+        self.view = ViewApp(root, self.on_click)
         self.update_view()
 
     def on_click(self):

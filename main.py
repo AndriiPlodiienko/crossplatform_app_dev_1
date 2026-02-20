@@ -10,19 +10,30 @@ class ModelApp:
         if self.counter >= len(self.planets):
             self.counter = 0
     
+    def step_down(self):
+        self.counter -= 1
+        if self.counter < 0:
+            self.counter = len(self.planets) - 1
+    
     def get_values(self):
         return self.planets[self.counter]
     
 class ViewApp(tk.Frame):
-    def __init__(self, master, on_click):
+    def __init__(self, master, on_back_click, on_forward_click):
         super().__init__(master)
         self.pack()
 
         self.label = tk.Label(self, text="", bg="white", fg="black", width=25, height=3, font=("Arial", 14), relief="solid", bd=2)      
         self.label.pack()
 
-        button = tk.Button(self, text="PRESS", command=on_click)
-        button.pack()
+        button_frame = tk.Frame(self)
+        button_frame.pack()
+
+        back_button = tk.Button(button_frame, text="Back", command=on_back_click, width=10)
+        back_button.pack(side=tk.LEFT, padx=5)
+
+        forward_button = tk.Button(button_frame, text="Forward", command=on_forward_click, width=10)
+        forward_button.pack(side=tk.LEFT, padx=5)
 
     def update_label(self, text):
         self.label.config(text=text)
@@ -30,10 +41,14 @@ class ViewApp(tk.Frame):
 class ControllerApp:
     def __init__(self, root):
         self.model = ModelApp()
-        self.view = ViewApp(root, self.on_click)
+        self.view = ViewApp(root, self.on_back_click, self.on_forward_click)
         self.update_view()
 
-    def on_click(self):
+    def on_back_click(self):
+        self.model.step_down()
+        self.update_view()
+
+    def on_forward_click(self):
         self.model.step_up()
         self.update_view()
 

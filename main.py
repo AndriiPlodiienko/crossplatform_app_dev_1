@@ -15,11 +15,14 @@ class ModelApp:
         if self.counter < 0:
             self.counter = len(self.planets) - 1
     
+    def reset(self):
+        self.counter = 0
+    
     def get_values(self):
         return self.planets[self.counter]
     
 class ViewApp(tk.Frame):
-    def __init__(self, master, on_back_click, on_forward_click):
+    def __init__(self, master, on_back_click, on_forward_click, on_reset_click):
         super().__init__(master)
         self.pack()
 
@@ -35,13 +38,16 @@ class ViewApp(tk.Frame):
         forward_button = tk.Button(button_frame, text="Forward", command=on_forward_click, width=10)
         forward_button.pack(side=tk.LEFT, padx=5)
 
+        reset_button = tk.Button(button_frame, text="Reset", command=on_reset_click, width=10)
+        reset_button.pack(side=tk.LEFT, padx=5)
+
     def update_label(self, text):
         self.label.config(text=text)
 
 class ControllerApp:
     def __init__(self, root):
         self.model = ModelApp()
-        self.view = ViewApp(root, self.on_back_click, self.on_forward_click)
+        self.view = ViewApp(root, self.on_back_click, self.on_forward_click, self.on_reset_click)
         self.update_view()
 
     def on_back_click(self):
@@ -50,6 +56,10 @@ class ControllerApp:
 
     def on_forward_click(self):
         self.model.step_up()
+        self.update_view()
+
+    def on_reset_click(self):
+        self.model.reset()
         self.update_view()
 
     def update_view(self):
